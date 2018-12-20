@@ -1,4 +1,4 @@
-##0x00 登录防火墙管理页面
+## 0x00 登录防火墙管理页面
 
 ![IMAGE](./resources/3F21D275FF9D8F7A51C142B44750B2D0.jpg)
 
@@ -6,7 +6,7 @@
 
 Firewall.x控制台地址：https://firewallx.io/console/index.html#/dapp
 
-##0x01 使用管理员登录
+## 0x01 使用管理员登录
 
 点击右上角的管理员登录按钮，激活scatter窗口。
 
@@ -22,7 +22,7 @@ Firewall.x控制台地址：https://firewallx.io/console/index.html#/dapp
 
 此时暂无任何DApp接入。
 
-##0x02 接入新的DApp
+## 0x02 接入新的DApp
 
 点击左上角的接入新DApp的按钮，进入接入DApp界面。
 
@@ -40,7 +40,7 @@ Firewall.x控制台地址：https://firewallx.io/console/index.html#/dapp
 
 ![IMAGE](./resources/744FC01219EAE284FE8087439BA5A0A4.jpg)
 
-##0x03 配置管理规则
+## 0x03 配置管理规则
 
 点击DApp界面的规则管理按钮或左侧的规则管理选项卡，进入规则管理页面。
 
@@ -64,7 +64,7 @@ Firewall.x控制台地址：https://firewallx.io/console/index.html#/dapp
 
 需要注意的是，规则配置完成后，需要根据 [sdk教程][1] 进行对DApp进行配置才能让规则生效
 
-##0x04 统计分析
+## 0x04 统计分析
 
 点击左侧的DApp管理界面的统计分析按钮或者左侧的统计分析选项卡，进入统计分析页面。
 
