@@ -1,6 +1,14 @@
 #include <eosiolib/eosio.hpp>
 
-#define FIREWALL_CONTRACT N(firewall)
+/** 
+ * MainNet:
+ * #define FIREWALL_CONTRACT N(firewall.x)
+ * 
+ * kylin Testnet and jungle2.0 Testnet:
+ * #define FIREWALL_CONTRACT N(firewallxdev)
+ * 
+*/
+#define FIREWALL_CONTRACT N(firewallxdev)
 #include "firewall.hpp"
 
 using namespace eosio;
