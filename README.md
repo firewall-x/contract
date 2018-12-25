@@ -41,7 +41,12 @@ cleos push action firewallxdev init '[{"quantity": "0.1000 EOS","contract": "eos
 ```
 #### 2. 将 sdk/firewall.hpp 拷贝到 DApp 项目目录下，并在项目中引用
 ```c++
-// 定义防火墙账号，测试网为 firewallxdev ，主网为 firewall.x
+/*
+ * 必须在 `include` 之前 `define` 防火墙账号
+ * 测试网为 firewallxdev
+ * 主网为 firewall.x
+ * 本地环境以自己实际设置的为准
+ */
 #define FIREWALL_CONTRACT N(firewallxdev)
 #include "firewall.hpp"
 ```
@@ -60,7 +65,26 @@ if(iDetected==FIREWALL_STATUS_DANGER){
 ### 三、DApp 接入示例
 参考 sdk 目录 example.cpp [查看][3]
 
+### 四、常见问题解答
+1、为什么防火墙没有调用成功？
+答：请对照 SDK 接口指南的步骤排查问题，或者加入我们的 [Telegram][4] 交流群咨询。
+
+2、防火墙 SDK 是否会消耗 DApp 账号的 RAM？
+答：防火墙在记录日志时会消耗少量 RAM ，但项目方可通过控制台清理日志以释放空间。
+
+3、我设置了黑名单，为什么黑名单账号发起的交易仍然会成功？
+答：合约内使用 eosio_exit(0) 使事务立即结束，而非失败，此时可以在 web 控制台中查看拦截日志。
+
+4、为什么我在测试网中无法拦截合约账号？
+答：由于成本原因，测试网的防火墙合约账号库未实现实时更新，如果需要测试此功能，可以在 Telegram 群中联系管理员加入您的测试账号。
+
+5、为什么接入 DApp 要转账 0.1 EOS ？
+答：防火墙本身完全免费，但为防止被滥用，所以收取少量手续费。
+
+### 五、免责声明
+Firewall.X 仅做为安全辅助工具开放给开发者使用，并不能保证 DApp 不受黑客攻击，Firewall.X 不对任何 DApp 的攻击事件负责。
 
   [1]: https://firewallx.io/console/
   [2]: console.md
   [3]: sdk/example.cpp
+  [4]: https://t.me/joinchat/GG-aoRbwIzgOybx23TBGbQ
