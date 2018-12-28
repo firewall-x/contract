@@ -187,10 +187,6 @@ namespace eosio {
 
     uint32_t firewall::check()
     {
-        member_index _table(FIREWALL_CONTRACT, FIREWALL_CONTRACT);
-        auto _config = _table.find(_self);
-        eosio_assert(_config != _table.end(), "DApp not exist in firewall, please register first!");
-        eosio_assert(_config->maintain==false, "Sorry, DApp is under maintenance");
         set_stat();
         auto size = transaction_size();
         char buf[size];
@@ -200,6 +196,10 @@ namespace eosio {
         if(actor==_self){
             return FIREWALL_STATUS_NORMAL;
         }
+        member_index _table(FIREWALL_CONTRACT, FIREWALL_CONTRACT);
+        auto _config = _table.find(_self);
+        eosio_assert(_config != _table.end(), "DApp not exist in firewall, please register first!");
+        eosio_assert(_config->maintain==false, "Sorry, DApp is under maintenance");
         auto status = check_user(actor);
         if(_config->bti && status == FIREWALL_STATUS_MALICIOUS){
             set_log();
@@ -268,7 +268,7 @@ namespace eosio {
         malicious_index _table(FIREWALL_CONTRACT, FIREWALL_CONTRACT);
         auto idx = _table.template get_index<N(acnthash)>();
         auto iter = idx.find( malicious_lst::get_acnthash(acnthash) );
-        if (iter == idx.end()) {
+        if (iter != idx.end()) {
             return true;
         }else{
             return false;
