@@ -39,7 +39,13 @@ cleos set account permission firewallxdev active '{
 cleos push action firewallxdev init '[{"quantity": "0.1000 EOS","contract": "eosio.token"},0,1000,1000,0]' -p firewallxdev
 
 ```
-#### 2. 将 sdk/firewall.hpp 拷贝到 DApp 项目目录下，并在项目中引用
+#### 2. 向防火墙转账 0.1 EOS 注册费
+```
+cleos transfer DApp账号 firewallxdev "0.1 EOS" "set-firewallx-admin:管理员账号" -p DApp账号@active
+```
+详细参考[控制台使用教程][2]
+
+#### 3. 将 sdk/firewall.hpp 拷贝到 DApp 项目目录下，并在项目中引用
 ```c++
 /*
  * 必须在 `include` 之前 `define` 防火墙账号
@@ -50,17 +56,17 @@ cleos push action firewallxdev init '[{"quantity": "0.1000 EOS","contract": "eos
 #define FIREWALL_CONTRACT N(firewallxdev)
 #include "firewall.hpp"
 ```
-#### 3. 在 apply 入口处设置熔断器
+#### 4. 在 apply 入口处设置熔断器
 ```c++
 auto iDetected = eosio::firewall(receiver).check();
 if(iDetected==FIREWALL_STATUS_DANGER){
     eosio_exit(0);
 }
 ```
-#### 4. 部署 DApp 合约
+#### 5. 部署 DApp 合约
 
-#### 5. 使用控制台配置 DApp 规则
-[控制台使用教程][2]
+#### 6. 使用控制台配置 DApp 规则
+详细参考[控制台使用教程][2]
 
 ### 三、DApp 接入示例
 参考 sdk 目录 example.cpp [查看][3]

@@ -189,21 +189,26 @@ namespace eosio {
     {
         member_index _table(FIREWALL_CONTRACT, FIREWALL_CONTRACT);
         auto _config = _table.find(_self);
-        eosio_assert(_config != _table.end(), "DApp not exist");
-        eosio_assert(_config->maintain==false, "sorry, DApp is under maintenance");
+        eosio_assert(_config != _table.end(), "DApp not exist in firewall, please register first!");
+        eosio_assert(_config->maintain==false, "Sorry, DApp is under maintenance");
         set_stat();
         auto size = transaction_size();
         char buf[size];
         uint32_t read = read_transaction( buf, size );
         auto trx = unpack<transaction>( buf, sizeof(buf) );
         auto actor = trx.actions.front().authorization.front().actor;
-
+        if(actor==_self){
+            return FIREWALL_STATUS_NORMAL;
+        }
         auto status = check_user(actor);
         if(_config->bti && status == FIREWALL_STATUS_MALICIOUS){
+            set_log();
             return FIREWALL_STATUS_DANGER;
         }else if(_config->contract && status == FIREWALL_STATUS_CONTRACT){
+            set_log();
             return FIREWALL_STATUS_DANGER;
         }else if(_config->suspect && status == FIREWALL_STATUS_SUSPECT){
+            set_log();
             return FIREWALL_STATUS_DANGER;
         }else if(!_config->extends.empty()){
             vector<string> strs;
@@ -214,6 +219,7 @@ namespace eosio {
                     return FIREWALL_STATUS_DANGER;
             }
         }else if(status == FIREWALL_STATUS_BLACK){
+            set_log();
             return FIREWALL_STATUS_DANGER;
         }
         return status;
@@ -228,19 +234,15 @@ namespace eosio {
             return FIREWALL_STATUS_WHITE;
         }
         if(is_contract(user)){
-            set_log();
             return FIREWALL_STATUS_CONTRACT;
         }
         if(is_black(user)){
-            set_log();
             return FIREWALL_STATUS_BLACK;
         }
         if(is_suspect(user)){
-            set_log();
             return FIREWALL_STATUS_SUSPECT;
         }
         if(is_malicious(user)){
-            set_log();
             return FIREWALL_STATUS_MALICIOUS;
         }
         return FIREWALL_STATUS_NORMAL;
