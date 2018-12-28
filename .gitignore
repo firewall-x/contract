@@ -33,3 +33,7 @@
 
 .DS_Store
 .vscode
+
+example.wasm
+example.wast
+example.abi

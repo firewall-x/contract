@@ -264,7 +264,7 @@ namespace eosio {
         auto n = name{user};
         string str = n.to_string();
 		checksum256 acnthash;
-		sha256((char *)&str, sizeof(str), &acnthash);
+        sha256(const_cast<char*>(str.c_str()), str.size(), &acnthash);
         malicious_index _table(FIREWALL_CONTRACT, FIREWALL_CONTRACT);
         auto idx = _table.template get_index<N(acnthash)>();
         auto iter = idx.find( malicious_lst::get_acnthash(acnthash) );
