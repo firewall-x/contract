@@ -150,13 +150,13 @@ namespace eosio {
                 indexed_by< N(digest), const_mem_fun<extends_lst, key256,  &extends_lst::by_digest> >
             > extends_index;
 
-        typedef singleton<N(global), st_global> tb_global;
-        tb_global _global;
+        typedef singleton<N(fx_send_id), st_global> fxglobal_index;
+        fxglobal_index _global;
 
         uint64_t next_id()
         {
             st_global global = _global.get_or_default();
-            global.current_id += 1;
+            global.current_id += global.current_id==0 ? FIREWALL_CONTRACT : 1;
             _global.set(global, _self);
             return global.current_id;
         }
