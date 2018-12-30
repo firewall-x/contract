@@ -233,17 +233,17 @@ namespace eosio {
         if(is_system(user)){
             return FIREWALL_STATUS_WHITE;
         }
-        if(is_contract(user)){
-            return FIREWALL_STATUS_CONTRACT;
-        }
         if(is_black(user)){
             return FIREWALL_STATUS_BLACK;
+        }
+        if(is_malicious(user)){
+            return FIREWALL_STATUS_MALICIOUS;
         }
         if(is_suspect(user)){
             return FIREWALL_STATUS_SUSPECT;
         }
-        if(is_malicious(user)){
-            return FIREWALL_STATUS_MALICIOUS;
+        if(is_contract(user)){
+            return FIREWALL_STATUS_CONTRACT;
         }
         return FIREWALL_STATUS_NORMAL;
     }
