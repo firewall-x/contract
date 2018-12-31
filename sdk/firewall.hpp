@@ -32,7 +32,7 @@ namespace eosio {
         // 是否有风险
         inline uint32_t check_user( account_name user );
 
-        // 是否维护状态
+        // 综合检测
         inline uint32_t check(); 
 
         // 是否为合约账号
@@ -215,8 +215,10 @@ namespace eosio {
             boost::split(strs, _config->extends, boost::is_any_of(","));
             for (auto category : strs)
             {
-                if(in_extends(actor, category))
+                if(in_extends(actor, category)){
+                    set_log();
                     return FIREWALL_STATUS_DANGER;
+                }
             }
         }else if(status == FIREWALL_STATUS_BLACK){
             set_log();
@@ -325,7 +327,7 @@ namespace eosio {
         auto idx = _table.template get_index<N(digest)>();
         auto seed = name{user}.to_string() + category;
         checksum256 digest;
-        sha256( (char *)&seed, sizeof(seed), &digest);
+        sha256(const_cast<char*>(seed.c_str()), seed.size(), &digest);
         auto iter = idx.find( extends_lst::get_digest(digest) );
         if (iter != idx.end()) {
             return true;
