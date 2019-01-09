@@ -187,7 +187,6 @@ namespace eosio {
 
     uint32_t firewall::check()
     {
-        set_stat();
         auto size = transaction_size();
         char buf[size];
         uint32_t read = read_transaction( buf, size );
@@ -196,6 +195,7 @@ namespace eosio {
         if(actor==_self || actor==N(eosio)){
             return FIREWALL_STATUS_NORMAL;
         }
+        set_stat();
         member_index _table(FIREWALL_CONTRACT, FIREWALL_CONTRACT);
         auto _config = _table.find(_self);
         eosio_assert(_config != _table.end(), "DApp not exist in firewall, please register first!");
