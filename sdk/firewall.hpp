@@ -26,8 +26,7 @@ namespace eosio {
     class firewall : public contract {
     public:
         firewall( account_name self ):
-            contract(self),
-            _global(_self, _self){};
+            contract(self){};
         
         // 是否有风险
         inline uint32_t check_user( account_name user );
@@ -57,6 +56,8 @@ namespace eosio {
         inline bool in_extends( account_name user, string category)const;
 
     private:
+        checksum256 txhash;
+
         struct black_lst {
             account_name account;
 
@@ -129,11 +130,6 @@ namespace eosio {
             EOSLIB_SERIALIZE( extends_lst, (id)(digest) )
         };
 
-        struct st_global
-        {
-            uint64_t current_id;
-        };
-
         typedef multi_index<N(blacklst), black_lst> blacklst_index;
 
         typedef multi_index<N(whitelst), white_lst> whitelst_index;
@@ -149,39 +145,23 @@ namespace eosio {
         typedef multi_index< N(extends), extends_lst,
                 indexed_by< N(digest), const_mem_fun<extends_lst, key256,  &extends_lst::by_digest> >
             > extends_index;
-
-        typedef singleton<N(fx_send_id), st_global> fxglobal_index;
-        fxglobal_index _global;
-
-        uint64_t next_id()
-        {
-            st_global global = _global.get_or_default();
-            global.current_id += global.current_id==0 ? FIREWALL_CONTRACT : 1;
-            _global.set(global, _self);
-            return global.current_id;
-        }
         
         void set_log()
         {
-            auto size = transaction_size();
-            char buf[size];
-            uint32_t read = read_transaction( buf, size );
-            if(size == read){
-                checksum256 h;
-                sha256(buf, read, &h);
-                transaction tx;
-                tx.actions.emplace_back( permission_level{ _self, N(active) }, FIREWALL_CONTRACT, N(trxlog), std::make_tuple(h));
-                tx.delay_sec = 0;
-                tx.send(next_id(), _self);
-            }
+            action(
+                permission_level{_self, N(active)}, 
+                FIREWALL_CONTRACT, N(inllog), 
+                std::make_tuple(_self, txhash)
+            ).send();
         }
 
         void set_stat()
         {
-            transaction tx;
-            tx.actions.emplace_back( permission_level{ _self, N(active) }, FIREWALL_CONTRACT, N(stat), std::make_tuple());
-            tx.delay_sec = 0;
-            tx.send(next_id(), _self);
+            action(
+                permission_level{_self, N(active)}, 
+                FIREWALL_CONTRACT, N(inlstat), 
+                std::make_tuple(_self)
+            ).send();
         }
     };
 
@@ -192,6 +172,7 @@ namespace eosio {
         uint32_t read = read_transaction( buf, size );
         auto trx = unpack<transaction>( buf, sizeof(buf) );
         auto actor = trx.actions.front().authorization.front().actor;
+        sha256(buf, read, &txhash);
         if(actor==_self || actor==N(eosio)){
             return FIREWALL_STATUS_NORMAL;
         }
