@@ -30,7 +30,10 @@ namespace eosio {
         inline uint32_t check_user( name user );
 
         // 综合检测
-        inline uint32_t check(); 
+        inline uint32_t check_actor(); 
+
+        // 检测转账风险
+        inline uint32_t check_transfer(vector<name> allowtokens); 
 
         // 是否为合约账号
         inline bool is_contract( name user )const;
@@ -176,8 +179,8 @@ namespace eosio {
             ).send();
         }
     };
-
-    uint32_t firewall::check()
+    
+    uint32_t firewall::check_actor()
     {
         auto size = transaction_size();
         char buf[size];
@@ -218,6 +221,21 @@ namespace eosio {
             return FIREWALL_STATUS_DANGER;
         }
         return status;
+    }
+
+    uint32_t firewall::check_transfer(vector<name> allowtokens){
+        auto size = transaction_size();
+        char buf[size];
+        uint32_t read = read_transaction(buf, size);
+        auto trx = unpack<transaction>(buf, sizeof(buf));
+        for (auto contract : allowtokens)
+        {
+            if(trx.actions.front().account==contract){
+                return FIREWALL_STATUS_NORMAL;
+            }
+        }
+        set_log();
+        return FIREWALL_STATUS_DANGER;
     }
 
     uint32_t firewall::check_user( name user )

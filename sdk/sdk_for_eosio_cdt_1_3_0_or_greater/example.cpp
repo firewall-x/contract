@@ -9,7 +9,7 @@
  * 
 */
 #define FIREWALL_CONTRACT name("firewallxdev")
-#include "firewall_cdt.hpp"
+#include "firewall.hpp"
 
 using namespace eosio;
 
@@ -35,10 +35,18 @@ extern "C" {
     read_action_data( buffer, size );
     datastream<const char*> ds(buffer, size);
     // firewall start
-    auto iDetected = eosio::firewall(name(receiver), name(code), ds).check();
+    auto iDetected = eosio::firewall(name(receiver), name(code), ds).check_actor();
     if(iDetected==FIREWALL_STATUS_DANGER){
         eosio_exit(0);
     }
+    
+    // if(action==name("transfer").value){ // 如果有转账操作，只允许直接调用相应token合约转账
+    //     auto iDetected2 = eosio::firewall(name(receiver), name(code), ds).check_transfer({name("eosio.token"), name("everipediaiq")});
+    //     if(iDetected2==FIREWALL_STATUS_DANGER){
+    //         eosio_exit(0);
+    //     }
+    //     // execute transfer action here
+    // }
     // end
     execute_action(name(receiver), name(code), &example::callme);
     eosio_exit(0);

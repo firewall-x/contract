@@ -56,19 +56,22 @@ cleos transfer DApp账号 firewallxdev "0.1 EOS" "set-firewallx-admin:管理员�
 #define FIREWALL_CONTRACT N(firewallxdev)
 #include "firewall.hpp"
 ```
-#### 4. 在 apply 入口处设置熔断器
+#### 4. 在 apply 入口处检测授权人 (actor)
 ```c++
-auto iDetected = eosio::firewall(receiver).check();
+auto iDetected = eosio::firewall(receiver).check_actor();
 if(iDetected==FIREWALL_STATUS_DANGER){
     eosio_exit(0);
 }
 ```
+如果合约有转账操作，可调用 check_transfer 函数检测。
+其它接口函数可查看 firewall.hpp
+
 #### 5. 部署 DApp 合约
 
 #### 6. 使用控制台配置 DApp 规则
 详细参考[控制台使用教程][2]
 
-### 三、DApp 接入示例
+### 三、DApp 合约接入示例
 参考 sdk 目录 example.cpp [查看][3]
 
 ### 四、常见问题解答

@@ -37,10 +37,18 @@ public:
 extern "C" {
 [[noreturn]] void apply( uint64_t receiver, uint64_t code, uint64_t action ) {
     // firewall start
-    auto iDetected = eosio::firewall(receiver).check();
+    auto iDetected = eosio::firewall(receiver).check_actor();
     if(iDetected==FIREWALL_STATUS_DANGER){
         eosio_exit(0);
     }
+    
+    // if(action==N(transfer)){ //如果有转账操作，只允许直接调用相应token合约转账
+    //     auto iDetected2 = eosio::firewall(receiver).check_transfer({N(eosio.token), N(everipediaiq)});
+    //     if(iDetected2==FIREWALL_STATUS_DANGER){
+    //         eosio_exit(0);
+    //     }
+    //     // execute transfer action here
+    // }
     // end
     
     example c( receiver );
