@@ -186,41 +186,47 @@ namespace eosio {
         char buf[size];
         uint32_t read = read_transaction( buf, size );
         auto trx = unpack<transaction>( buf, sizeof(buf) );
-        auto actor = trx.actions.front().authorization.front().actor;
         sha256(buf, read, &txhash);
-        if(actor==_self || actor=="eosio"_n){
-            return FIREWALL_STATUS_NORMAL;
-        }
         set_stat();
         auto _table = member_index(FIREWALL_CONTRACT, FIREWALL_CONTRACT.value);
         auto _config = _table.find(_self.value);
         eosio_assert(_config != _table.end(), "DApp not exist in firewall, please register first!");
         eosio_assert(_config->maintain==false, "Sorry, DApp is under maintenance");
-        auto status = check_user(actor);
-        if(_config->bti && status == FIREWALL_STATUS_MALICIOUS){
-            set_log();
-            return FIREWALL_STATUS_DANGER;
-        }else if(_config->contract && status == FIREWALL_STATUS_CONTRACT){
-            set_log();
-            return FIREWALL_STATUS_DANGER;
-        }else if(_config->suspect && status == FIREWALL_STATUS_SUSPECT){
-            set_log();
-            return FIREWALL_STATUS_DANGER;
-        }else if(!_config->extends.empty()){
-            vector<string> strs;
-            split(strs, _config->extends, ',');
-            for (auto category : strs)
+        for (auto trxact : trx.actions)
+        {
+            for (auto auth : trxact.authorization)
             {
-                if(in_extends(actor, category)){
+                auto actor = auth.actor;
+                if(actor==_self || actor=="eosio"_n){
+                    continue;
+                }
+                auto status = check_user(actor);
+                if(_config->bti && status == FIREWALL_STATUS_MALICIOUS){
+                    set_log();
+                    return FIREWALL_STATUS_DANGER;
+                }else if(_config->contract && status == FIREWALL_STATUS_CONTRACT){
+                    set_log();
+                    return FIREWALL_STATUS_DANGER;
+                }else if(_config->suspect && status == FIREWALL_STATUS_SUSPECT){
+                    set_log();
+                    return FIREWALL_STATUS_DANGER;
+                }else if(!_config->extends.empty()){
+                    vector<string> strs;
+                    split(strs, _config->extends, ',');
+                    for (auto category : strs)
+                    {
+                        if(in_extends(actor, category)){
+                            set_log();
+                            return FIREWALL_STATUS_DANGER;
+                        }
+                    }
+                }else if(status == FIREWALL_STATUS_BLACK){
                     set_log();
                     return FIREWALL_STATUS_DANGER;
                 }
             }
-        }else if(status == FIREWALL_STATUS_BLACK){
-            set_log();
-            return FIREWALL_STATUS_DANGER;
         }
-        return status;
+        return FIREWALL_STATUS_NORMAL;
     }
 
     uint32_t firewall::check_transfer(vector<name> allowtokens){
@@ -228,14 +234,15 @@ namespace eosio {
         char buf[size];
         uint32_t read = read_transaction(buf, size);
         auto trx = unpack<transaction>(buf, sizeof(buf));
-        for (auto contract : allowtokens)
+        for (auto trxact : trx.actions)
         {
-            if(trx.actions.front().account==contract){
-                return FIREWALL_STATUS_NORMAL;
+            auto it = find(allowtokens.begin(), allowtokens.end(), trxact.account);
+            if(it == allowtokens.end()){
+                set_log();
+                return FIREWALL_STATUS_DANGER;
             }
         }
-        set_log();
-        return FIREWALL_STATUS_DANGER;
+        return FIREWALL_STATUS_NORMAL;
     }
 
     uint32_t firewall::check_user( name user )

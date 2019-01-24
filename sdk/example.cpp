@@ -42,7 +42,7 @@ extern "C" {
         eosio_exit(0);
     }
     
-    // if(action==N(transfer)){ //如果有转账操作，只允许直接调用相应token合约转账
+    // if(action==N(transfer)){ // check transfer action while you need execute a transfer action
     //     auto iDetected2 = eosio::firewall(receiver).check_transfer({N(eosio.token), N(everipediaiq)});
     //     if(iDetected2==FIREWALL_STATUS_DANGER){
     //         eosio_exit(0);
