@@ -3,6 +3,8 @@
 > by SlowMist team
 > 2018.12.19
 
+English Version: [check here](/README_EN.md)  
+
 ### 一、简介
 配合 Firewall.x [控制台][1] 开发者可以自由控制 DApp 的用户黑白名单，禁止恶意用户访问，限制合约账号使用 DApp，查看调用频率以及查看异常调用日志，同时在 sdk 内为开发者提供了常用的账号检测接口，开发者也可根据需要调用。
 

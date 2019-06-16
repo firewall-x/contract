@@ -1,3 +1,5 @@
+English Version: [check here](/console_EN.md)  
+
 ## 0x00 登录防火墙管理页面
 
 ![IMAGE](./resources/3F21D275FF9D8F7A51C142B44750B2D0.jpg)
