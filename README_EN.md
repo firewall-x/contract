@@ -1,7 +1,7 @@
 # FireWall.X - Powerful Firewall For EOS Contract
 
-> by SlowMist team
-> 2018.12.19
+> by SlowMist team  
+> 2018.12.19  
 
 ## Brief Introduction
 
@@ -11,7 +11,7 @@ Combine with FireWall.X [console](https://firewallx.io/console/#/dapp), develope
 
 1.Create and deploy FireWall.X contract first if in localnet
 
-```js
+```bash
 //Create firewall account
 cleos create account eosio firewallxdev EOSxxxxx EOSxxxx
 //deploy ABI
@@ -45,13 +45,13 @@ cleos push action firewallxdev init '[{"quantity": "0.1000 EOS","contract": "eos
 
 2.Transfer 0.1 EOS to register
 
-```js
+```bash
 cleos transfer DApp_account firewallxdev "0.1 EOS" "set-firewallx-admin:admin_account" -p DApp_account@active
 ```
 
 3.Copy the sdk/firewall.hpp into DApp directory and refers it  into the project
 
-```js
+```bash
 /*
  * must `define` firewall_contract befer `include`
  * the account name of test net is firewallxdev
@@ -64,7 +64,7 @@ cleos transfer DApp_account firewallxdev "0.1 EOS" "set-firewallx-admin:admin_ac
 
 4.Check actor in apply route
 
-```js
+```bash
 auto iDetected = eosio::firewall(receiver).check_actor();
 if(iDetected==FIREWALL_STATUS_DANGER){
     eosio_exit(0);
@@ -75,7 +75,7 @@ if(iDetected==FIREWALL_STATUS_DANGER){
 
 6.Rules to configure FireWall.X console
 
-[For Details](控制台使用教程)
+[For Details](console_EN.md)
 
 ## Example of access to FireWall.X
 
