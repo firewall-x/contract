@@ -83,19 +83,19 @@ Refer to the example.cpp in sdk directory
 
 ## Q&A
 
-Q:Why my DApp can not call the FireWall.X successfully?
+Q:Why my DApp can not call the FireWall.X successfully?  
 A:Check problems according the the SDK Interface Guide or join or [Telegram](https://t.me/firewallx_io) for details
 
-Q:Will FireWall.X sdk consume DApp's RAM?
+Q:Will FireWall.X sdk consume DApp's RAM?  
 A:Yes, the FireWall.X will consume a little RAM for logging and project sides can clear the log within console to release the RAM
 
-Q:Why do transactions initiated by blacklist accounts still succeed after configuring the blacklist on console？
+Q:Why do transactions initiated by blacklist accounts still succeed after configuring the blacklist on console？  
 A:Transactions initiated by blacklist will not get in the contract logic cause the eosio_exit(0) used in contract(see example.cpp for details) but will get a log which can be viewed in console.
 
-Q:Why I can not intercept contract account in testnet?
+Q:Why I can not intercept contract account in testnet?  
 A:Due to the cost, the FireWall.X contract account base of test network has not been updated in real time. If you need to test this function, you can contact the administrator in Telegram group to add your test account.
 
-Q:Why need 0.1 EOS cost to access FireWall.X？
+Q:Why need 0.1 EOS cost to access FireWall.X？  
 A:The FireWall.X itself is entirely free but in order to prevent abuse, a small fee is charged.
 
 ## Disclaimer

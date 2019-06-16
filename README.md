@@ -1,6 +1,6 @@
 # FireWall.X - Powerful Firewall For EOS Contract（强大的EOS智能合约防火墙）
 
-> by SlowMist team
+> by SlowMist team  
 > 2018.12.19
 
 English Version: [check here](/README_EN.md)  
@@ -77,22 +77,22 @@ if(iDetected==FIREWALL_STATUS_DANGER){
 参考 sdk 目录 example.cpp [查看][3]
 
 ### 四、常见问题解答
-1. 为什么防火墙没有调用成功？
+1. 为什么防火墙没有调用成功？  
 答：请对照 SDK 接口指南的步骤排查问题，或者加入我们的 [Telegram][4] 交流群咨询。
 
-2. 防火墙 SDK 是否会消耗 DApp 账号的 RAM？
+2. 防火墙 SDK 是否会消耗 DApp 账号的 RAM？  
 答：防火墙在记录日志时会消耗少量 RAM ，但项目方可通过控制台清理日志以释放空间。
 
-3. 我设置了黑名单，为什么黑名单账号发起的交易仍然会成功？
+3. 我设置了黑名单，为什么黑名单账号发起的交易仍然会成功？  
 答：合约内使用 eosio_exit(0) 使事务立即结束，而非失败，此时可以在 web 控制台中查看拦截日志。
 
-4. 为什么我在测试网中无法拦截合约账号？
+4. 为什么我在测试网中无法拦截合约账号？  
 答：由于成本原因，测试网的防火墙合约账号库未实现实时更新，如果需要测试此功能，可以在 Telegram 群中联系管理员加入您的测试账号。
 
-5. 为什么接入 DApp 要转账 0.1 EOS ？
+5. 为什么接入 DApp 要转账 0.1 EOS ？  
 答：防火墙本身完全免费，但为防止被滥用，所以收取少量手续费。
 
-6. 本地网络 LocalNet 的 chainid 是什么？
+6. 本地网络 LocalNet 的 chainid 是什么？  
 答：cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f
 
 ### 五、免责声明
