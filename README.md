@@ -101,4 +101,4 @@ Firewall.X 仅做为安全辅助工具开放给开发者使用，并不能保证
   [1]: https://firewallx.io/console/
   [2]: console.md
   [3]: sdk/example.cpp
-  [4]: https://t.me/joinchat/GG-aoRbwIzgOybx23TBGbQ
+  [4]: https://t.me/firewallx_io

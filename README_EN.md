@@ -84,7 +84,7 @@ Refer to the example.cpp in sdk directory
 ## Q&A
 
 Q:Why my DApp can not call the FireWall.X successfully?
-A:Check problems according the the SDK Interface Guide or join or [Telegram](https://t.me/joinchat/GG-aoRbwIzgOybx23TBGbQ) for details
+A:Check problems according the the SDK Interface Guide or join or [Telegram](https://t.me/firewallx_io) for details
 
 Q:Will FireWall.X sdk consume DApp's RAM?
 A:Yes, the FireWall.X will consume a little RAM for logging and project sides can clear the log within console to release the RAM
