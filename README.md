@@ -95,6 +95,9 @@ if(iDetected==FIREWALL_STATUS_DANGER){
 6. 本地网络 LocalNet 的 chainid 是什么？  
 答：cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f
 
+7. 为什么我的 DApp 调试时总是报错 "DApp not exist in firewall, please register first!"  
+答：DApp 未注册前无法调用防火墙的任何模块，可先移除 sdk，完成注册后再重新引入。
+
 ### 五、免责声明
 Firewall.X 仅做为安全辅助工具开放给开发者使用，并不能保证 DApp 不受黑客攻击，Firewall.X 不对任何 DApp 的攻击事件负责。
 

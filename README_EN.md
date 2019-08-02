@@ -98,6 +98,9 @@ A:Due to the cost, the FireWall.X contract account base of test network has not 
 Q:Why need 0.1 EOS cost to access FireWall.X？  
 A:The FireWall.X itself is entirely free but in order to prevent abuse, a small fee is charged.
 
+Q. Why do I always get the error "DApp not exist in firewall, please register first!"  
+A:You cann't use the sdk in the contract unless you register it, please remove it first, and re-include it after register.
+
 ## Disclaimer
 
 Firewall.X is only open to developers as a security auxiliary tool, and there is no guarantee that DApp cannot be attacked by hackers.
